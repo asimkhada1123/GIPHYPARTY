@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Long list</title>
+</head>
+<body>
+<h1>GIPHY PARTY</h1>
+<form id = "form">
+  <input type = "text" id = "text">
+  <input type = "button" value = "Search GIPHY!" id = "search">
+  <input type = "button" value = "Remove Images" id = "remove">
+</form>
+<div id = "hello">
+
+</div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#search').on("click", function(e){
+     //Prevent Clicking of form 
+      e.preventDefault()
+
+      console.log($('#text').val())
+      let search = $('#text').val()
+      let count = 1 + Math.floor(Math.random()*50)
+      $.ajax({
+        method: "GET", 
+        url: "https://api.giphy.com/v1/gifs/search", 
+        data:{
+          q: search,
+          rating: 'g', 
+          api_key: 'dc6zaTOxFJmzC'
+        }
+        }).then(function(data){
+        let $img = $('<img/>')
+        $img.attr('src',data.data[count].images.original.url)
+         $('#hello').append($img).append($('<div/>'))
+        }).catch(function(error){
+        console.log("ERROR")
+      })
+      $("#form")[0].reset()
+    })
+
+    $('#remove').on("click", function(e){
+      $('#hello').empty()
+    })
+  })
+ 
+</script>
+</body>
+</html>
